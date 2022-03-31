@@ -24,50 +24,24 @@ namespace FinalProjectFirstTest.Controllers
         }
         //測試
         [HttpPost]
-        public IActionResult GetData(string users)
+        public Boolean Usercheckin(UsersModel ssr)
 
         {
-
-            //Users users = new Users();
-
-            //MemoryStream stream = new MemoryStream();
-
-            //Request.Body.CopyTo(stream);
-
-            //stream.Position = 0;
-
-            //using (StreamReader reader = new StreamReader(stream))
-
-            //{
-
-            //    string requestBody = reader.ReadToEnd();
-
-            //    if (requestBody.Length > 0)
-
-            //    {
-
-            //        users = JsonConvert.DeserializeObject<Users>(requestBody);
-
-            //    }
-
-            //}
-
-
-
-            return Json(users);
-
+            Console.WriteLine(ssr.Name);
+            return true;
         }
-        public class Users
+
+
+        public class UsersModel
 
         {
-
             public string Name { get; set; }
 
             public string Address { get; set; }
 
             public string PhoneNo { get; set; }
-
+          
         }
 
-    }
+     }
 }

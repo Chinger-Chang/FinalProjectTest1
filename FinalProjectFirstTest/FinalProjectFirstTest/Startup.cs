@@ -31,16 +31,16 @@ namespace FinalProjectFirstTest
 		public void ConfigureServices(IServiceCollection services)
 		{
 			
-			//注入(DI) 服務
-			services.AddDbContext<FinalProjectDbContext>(opt => {
-				opt.UseSqlServer(Configuration.GetConnectionString("FinalProjectTest"));
-			});
-			//加入 Cookie  (using Microsoft.AspNetCore.Authentication.Cookies;)
-			services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(opt =>
-			{  //登入路徑 PathString(using Microsoft.AspNetCore.Http;)
-				opt.LoginPath = new PathString("/Index");
-				opt.AccessDeniedPath = new PathString("/home/AccessDenied");
-			}) ;
+			////注入(DI) 服務
+			//services.AddDbContext<FinalProjectDbContext>(opt => {
+			//	opt.UseSqlServer(Configuration.GetConnectionString("FinalProjectTest"));
+			//});
+			////加入 Cookie  (using Microsoft.AspNetCore.Authentication.Cookies;)
+			//services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(opt =>
+			//{  //登入路徑 PathString(using Microsoft.AspNetCore.Http;)
+			//	opt.LoginPath = new PathString("/Index");
+			//	opt.AccessDeniedPath = new PathString("/home/AccessDenied");
+			//}) ;
 
 			// 加入一個MVC服務
 			services.AddControllersWithViews();

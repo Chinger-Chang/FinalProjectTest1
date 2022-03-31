@@ -76,51 +76,51 @@
 
                     <div class="col-md-7 mb-5" data-aos="fade">
 
-                        <form action="#" class="p-5 bg-white">
+                        <!-- <form action="#" class="p-5 bg-white">-->
 
-                            <div class="row form-group">
+                        <div class="row form-group">
 
-                                <div class="col-md-6 mb-3 mb-md-0">
+                            <div class="col-md-6 mb-3 mb-md-0">
 
-                                    <input type="text" v-model="Address" placeholder="Enter your Name" class="form-control rounded">
-
-                                </div>
+                                <input type="text" v-model="Address" placeholder="Enter your Name" class="form-control rounded">
 
                             </div>
 
-                            <div class="row form-group">
+                        </div>
 
-                                <div class="col-md-6 mb-3 mb-md-0">
+                        <div class="row form-group">
 
-                                    <input type="text" v-model="Name" placeholder="Enter your Address" class="form-control rounded">
+                            <div class="col-md-6 mb-3 mb-md-0">
 
-                                </div>
-
-                            </div>
-
-                            <div class="row form-group">
-
-                                <div class="col-md-6 mb-3 mb-md-0">
-
-                                    <input type="text" v-model="Phone" placeholder="Enter your Phone" class="form-control rounded">
-
-                                </div>
+                                <input type="text" v-model="Name" placeholder="Enter your Address" class="form-control rounded">
 
                             </div>
 
-                            <div class="row form-group">
+                        </div>
 
-                                <div class="col-md-6 mb-3 mb-md-0">
+                        <div class="row form-group">
 
-                                    <input type="button" value="Submit" v-on:click="OnSubmit()" class="btn btn-primary py-2 px-4 text-white">
+                            <div class="col-md-6 mb-3 mb-md-0">
 
-                                </div>
+                                <input type="text" v-model="Phone" placeholder="Enter your Phone" class="form-control rounded">
 
                             </div>
 
-                            <br />
+                        </div>
 
-                        </form>
+                        <div class="row form-group">
+
+                            <div class="col-md-6 mb-3 mb-md-0">
+
+                                <input type="button" value="Submit" v-on:click="OnSubmit" class="btn btn-primary py-2 px-4 text-white">
+
+                            </div>
+
+                        </div>
+
+                        <br />
+
+                        <!-- </form>-->
 
                         <br />
 
@@ -176,15 +176,15 @@
 
                 let currentins=this;
 
-                let url = ("/User/GetData");
+                let url = ("/User/Usercheckin");
 
                 let users = {
 
-                    'Name':this.Name,
+                    Name:this.Name,
 
-                    'Address':this.Address,
+                    Address:this.Address,
 
-                    'PhoneNo':this.Phone
+                    PhoneNo:this.Phone
 
                 };
            
@@ -193,19 +193,21 @@
                     method: 'post',
 
                     url: url,
-                   'data':users
+                   data: users
                   
                 }).then
 
-                    (data => {
+                    (function (response){
+                        if (response.data == true) {
+                            alert("success");
+                        }
+                        else {
+                            alert('fail');
+                        }
 
-                        currentins.name = (data.data.name)
+                        
 
-                        currentins.address = (data.data.address)
-
-                        currentins.phone = (data.data.phoneNo)
-
-                    }).catch(err => alert(err))
+                    }).catch(function (response) { console.log(response)});
                
                 console.log(users);
             }
