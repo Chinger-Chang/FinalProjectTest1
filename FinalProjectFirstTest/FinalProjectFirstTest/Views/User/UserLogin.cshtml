@@ -1,0 +1,267 @@
+﻿
+@{
+    ViewData["Title"] = "使用者登入";
+}
+
+<!--<h1>使用者登入</h1>-->
+@*登入表單*@
+<!--<div class="text">登入範本</div>
+<form class="form-signin" name="formsignin" action="/User/UserLogin" id="formsignin">
+
+    <div class="fieId">
+        <label>信箱:</label>
+        <span class="fas fa-user"></span>
+        <input type="email" id="Email" name="Email" v-model="eml" required placeholder="Email">-->
+        <!--email or phone -->
+    <!--</div>
+    <div class="field">
+        <label>密碼:</label>
+        <span class="fas fa-lock"></span>
+        <input type="password" id="Password" name="Password" placeholder="Password" v-model="pwd">-->
+        <!--password-->
+    <!--</div>
+    <div class="forgot-pass"><a href="#">Forgot password?</a></div>
+    <button id="signin" type="submit" v-on:click="get">Sign in</button>
+    <input type="submit">
+    <div class="signup">
+        Not a member? <a href="/Index">Sing up now</a>
+    </div>
+</form>
+<hr />
+<div id="formsignin">
+    {{ formsignin }}
+</div>-->
+
+
+
+<!--   ㄇ媽媽嗎
+    -->
+
+
+
+
+
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <meta name="viewport" content="width=device-width" />
+
+    <title>
+
+        Example Post Data From VueJs In ASP.NET CORE Using Axios
+
+    </title>
+
+    @*<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>*@
+
+</head>
+
+<body>
+
+    <div id="New_App">
+
+        <div class="site-section bg-light">
+
+            <div class="container">
+
+                <div class="row">
+
+                    <div class="col-md-7 mb-5" data-aos="fade">
+
+                        <form action="#" class="p-5 bg-white">
+
+                            <div class="row form-group">
+
+                                <div class="col-md-6 mb-3 mb-md-0">
+
+                                    <input type="text" v-model="Address" placeholder="Enter your Name" class="form-control rounded">
+
+                                </div>
+
+                            </div>
+
+                            <div class="row form-group">
+
+                                <div class="col-md-6 mb-3 mb-md-0">
+
+                                    <input type="text" v-model="Name" placeholder="Enter your Address" class="form-control rounded">
+
+                                </div>
+
+                            </div>
+
+                            <div class="row form-group">
+
+                                <div class="col-md-6 mb-3 mb-md-0">
+
+                                    <input type="text" v-model="Phone" placeholder="Enter your Phone" class="form-control rounded">
+
+                                </div>
+
+                            </div>
+
+                            <div class="row form-group">
+
+                                <div class="col-md-6 mb-3 mb-md-0">
+
+                                    <input type="button" value="Submit" v-on:click="OnSubmit()" class="btn btn-primary py-2 px-4 text-white">
+
+                                </div>
+
+                            </div>
+
+                            <br />
+
+                        </form>
+
+                        <br />
+
+                        Name: <span>{{name}} </span>
+
+                        <br />
+
+                        Address: <span>{{address}} </span>
+
+                        <br />
+
+                        Phone: <span>{{phone}} </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+
+</body>
+
+
+
+</html>
+
+
+
+
+<script>
+    var app = new Vue({
+
+        el: '#New_App',
+
+        data: {
+            Name: '',
+            Address: '',
+            Phone: '',
+            name: '',
+            address: '',
+            phone: ''
+        },
+
+        methods: {
+
+            OnSubmit: function () {
+
+                let currentins=this;
+
+                let url = ("/User/GetData");
+
+                let users = {
+
+                    'Name':this.Name,
+
+                    'Address':this.Address,
+
+                    'PhoneNo':this.Phone
+
+                };
+           
+                axios({
+
+                    method: 'post',
+
+                    url: url,
+                   'data':users
+                  
+                }).then
+
+                    (data => {
+
+                        currentins.name = (data.data.name)
+
+                        currentins.address = (data.data.address)
+
+                        currentins.phone = (data.data.phoneNo)
+
+                    }).catch(err => alert(err))
+               
+                console.log(users);
+            }
+
+        }
+
+    })
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*<script type="text/javascript">
+
+        new Vue({
+            el: '#formsignin',
+            data: {
+                eml:"",
+                pwd:""
+            },
+            method: {
+                sendToServer: function () {
+                    axios({
+                        method: 'post',
+                        url: '/User',
+                        data: {
+                            "eml":this.eml,
+                            "pwd":this.pwd
+                        }
+                    }).then(function (response) {
+                        console.log(response);
+                    })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                }
+            }
+        })
+        console.log(response)
+        //response => (this.formsignin = response)
+    </script>*@
+
+
