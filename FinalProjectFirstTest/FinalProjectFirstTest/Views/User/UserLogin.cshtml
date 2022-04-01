@@ -56,13 +56,14 @@
             /** 規劃送出鍵動作之函式 */
             loginFunc: function () {               
                 let sim = new FormData();    //設立一個物件
-                sim.append('', this.user.email);  //綁定Vue之所input
-                sim.append('', this.user.password);
+                sim.append('Email', this.user.email);  //綁定Vue之所input
+                sim.append('Password', this.user.password);
                 /**使用Ajax做資料傳輸至後端控制器*/
+                let self = this;
                 $.ajax({
                     url: "/User/GetData",  //傳遞伺服端之位址
                     method: "post",          //傳遞方法為POST
-                    data:this.user,           //傳遞資料為Vue綁定之物件
+                    data:self.user,           //傳遞資料為Vue綁定之物件
                     //成功訊息
                     success: function (text) {   
                       alert('Successfully received Data');
