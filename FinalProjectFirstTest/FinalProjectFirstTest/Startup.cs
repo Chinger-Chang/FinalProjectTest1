@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace FinalProjectFirstTest
 {
 	public class Startup
@@ -30,17 +31,26 @@ namespace FinalProjectFirstTest
 		// ConfigureServices 設置組建 用於 連線Db
 		public void ConfigureServices(IServiceCollection services)
 		{
-			
-			////注入(DI) 服務
-			//services.AddDbContext<FinalProjectDbContext>(opt => {
-			//	opt.UseSqlServer(Configuration.GetConnectionString("FinalProjectTest"));
-			//});
-			////加入 Cookie  (using Microsoft.AspNetCore.Authentication.Cookies;)
-			//services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(opt =>
-			//{  //登入路徑 PathString(using Microsoft.AspNetCore.Http;)
-			//	opt.LoginPath = new PathString("/Index");
-			//	opt.AccessDeniedPath = new PathString("/home/AccessDenied");
-			//}) ;
+
+
+			//取出連接字串 操作定義的Property Configuration
+			//String connectionString = Configuration.GetConnectionString("FinalProjectTest");
+			//注入(DI) 服務
+			services.AddDbContext<FinalProjectDbContext>(opt =>
+            {
+                opt.UseSqlServer(Configuration.GetConnectionString("FinalProjectTest"));
+            });
+            //加入 Cookie(using Microsoft.AspNetCore.Authentication.Cookies;)
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(opt =>
+            {  //登入路徑 PathString(using Microsoft.AspNetCore.Http;)
+                opt.LoginPath = new PathString("/Index");
+            opt.AccessDeniedPath = new PathString("/home/AccessDenied");
+        }) ;
+
+			//加入自訂的Class變成一個服務物件Singleton()獨一(應用系統中只有一個共用的物件)-0216
+			services.AddSingleton<Models.DBUtility>();  //Method 1 -
+			//加入Session狀態服務 (配合瀏覽器進來第一個端點 後端準備一個ISession物件給你 同時送出前端Cookie(SessionID))
+			services.AddSession();
 
 			// 加入一個MVC服務
 			services.AddControllersWithViews();

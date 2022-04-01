@@ -18,7 +18,7 @@ namespace FinalProjectFirstTest.Models
 		{
 
 		}
-
+		//定義自動屬性Property
 		public DbSet<User> Users { get; set; }
 
 		public DbSet<Service> Services { get; set; }

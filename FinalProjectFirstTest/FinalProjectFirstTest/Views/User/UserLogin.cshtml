@@ -2,118 +2,116 @@
 @{
     ViewData["Title"] = "使用者登入";
 }
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
 <body>
-<h1>使用者登入</h1>
-登入表單
-<div class="text">登入範本</div>
-<form class="form-signin" id="formsignin">
+    <h1>使用者登入</h1>
+    登入表單
+    <div class="text">登入範本</div>
+    <form class="form-signin" id="app">
 
-    <div class="fieId">
-        <label>信箱:</label>
-        <span class="fas fa-user"></span>
-        <input type="email" id="Email" name="Email" v-model="user.account" required placeholder="Email">
-        email or phone
-    </div>
-    <div class="field">
-        <label>密碼:</label>
-        <span class="fas fa-lock"></span>
-        <input type="password" id="Password" name="Password" v-model="user.password" placeholder="Password">
-        password
-    </div>
-    <div class="forgot-pass"><a href="#">Forgot password?</a></div>
-    <button id="signin" type="submit" v-on:click="loginFunc">Sign in</button>
+        <div class="fieId">
+            <label>信箱:</label>
+            <span class="fas fa-user"></span>
+            <input type="email" v-model="user.email" required placeholder="Email">
+            email or phone
+        </div>
+        <div class="field">
+            <label>密碼:</label>
+            <span class="fas fa-lock"></span>
+            <input type="password" v-model="user.password" placeholder="Password">
+            password
+        </div>
+        <div class="forgot-pass"><a href="#">Forgot password?</a></div>
+        <button id="signin"v-on:click="loginFunc">Sign in</button>
 
-    <div class="signup">
-        Not a member? <a href="/Index">Sing up now</a>
-    </div>
+        <div class="signup">
+            Not a member? <a href="/Index">Sing up now</a>
+        </div>
 
-    <div v-text="loginResult"></div>
+        <div v-text="loginResult"></div>
 
-</form>
+    </form>
 
-<hr />
+</body>
 
-
-    </body>
 
 <script>
-    /**建立一個Vue物件* */
+    /**建立一個Vue 物件 */
     var app = new Vue({
-
-        el: '#formsignin',                                   /*定義Vue作用範圍,el意旨element*/
-
-        data: {                                                 //data是關鍵字-資料定義
-            user: {                                             //登入物件
-                account: "",                                //這是放帳號
-                password: ""                                          //這是放密碼
+        el: '#app',     /* 定義Vue作用範圍,el意旨元素element */
+        data: {            // data是Vue的關鍵字-資料定義
+            user: {               //設定名稱之空值                       
+                email:"",                                
+                password:""                                         
             },
-            loginResult: ""                                 //登入結果
+            loginResult:""                             
         },
-
-        methods: {                                          //methods 是關鍵字-使用方法
-            loginFunc: function () {                //事件指令
-                let sim = this;                             //指向物件
-                $.ajax({                                    //使用ajax套件做傳遞
-                    url: "/User/Usercheckin",       //傳遞位址
-                    method: "post",                       //傳遞方式post
-                    data: sim.user,                        //直接傳遞物件
-                    success: function (text) {         //成功結果
-                        sim.loginResult = text;     //畫面顯示結果
+        methods: {                // method是Vu之關鍵字-製作方法  
+            /** 規劃送出鍵動作之函式 */
+            loginFunc: function () {               
+                let sim = new FormData();    //設立一個物件
+                sim.append('', this.user.email);  //綁定Vue之所input
+                sim.append('', this.user.password);
+                /**使用Ajax做資料傳輸至後端控制器*/
+                $.ajax({
+                    url: "/User/GetData",  //傳遞伺服端之位址
+                    method: "post",          //傳遞方法為POST
+                    data:this.user,           //傳遞資料為Vue綁定之物件
+                    //成功訊息
+                    success: function (text) {   
+                      alert('Successfully received Data');
+                      console.log(text);
+                        sim.loginResult = text; 
+                    },
+                    //失敗訊息
+                    error: function () {
+                        alert('Failed to receive the Data');
+                       console.log('Failed');
                     }
                 });
 
             }
         }
-    }); //End new Vue
-
+    });
 </script>
 
+@*<script>
 
+    new Vue({
 
+        el: "#app",
+        data: {
+            firstName: "",
+            lastName: ""
+        },
+        methods: {
+            sendToServer: function () {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-@*<script type="text/javascript">
-
-        new Vue({
-            el: '#formsignin',
-            data: {
-                eml:"",
-                pwd:""
-            },
-            method: {
-                sendToServer: function () {
-                    axios({
-                        method: 'post',
-                        url: '/User',
-                        data: {
-                            "eml":this.eml,
-                            "pwd":this.pwd
-                        }
-                    }).then(function (response) {
+                axios({
+                    method: 'post',
+                    url: '/home/index',
+                    data: {
+                        "firstName": this.firstName,
+                        "lastName": this.lastName
+                    }
+                })
+                    .then(function (response) {
                         console.log(response);
                     })
-                        .catch(function (error) {
-                            console.log(error);
-                        });
-                }
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+
             }
-        })
-        console.log(response)
-        //response => (this.formsignin = response)
-    </script>*@
+        }
+
+    });
 
 
+</script>*@
