@@ -32,7 +32,16 @@ namespace FinalProjectFirstTest
 		public void ConfigureServices(IServiceCollection services)
 		{
 
+			// *** Cookie config*/
 
+			//加入 Cookie(using Microsoft.AspNetCore.Authentication.Cookies;)
+			services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(opt =>
+			{  //登入路徑 PathString(using Microsoft.AspNetCore.Http;)
+				opt.LoginPath = new PathString("/Index");
+				opt.AccessDeniedPath = new PathString("/home/AccessDenied");
+			});
+
+		// *** 連線SQL config*/
 			//取出連接字串 操作定義的Property Configuration
 			//String connectionString = Configuration.GetConnectionString("FinalProjectTest");
 			//注入(DI) 服務
@@ -40,12 +49,8 @@ namespace FinalProjectFirstTest
             {
                 opt.UseSqlServer(Configuration.GetConnectionString("FinalProjectTest"));
             });
-            //加入 Cookie(using Microsoft.AspNetCore.Authentication.Cookies;)
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(opt =>
-            {  //登入路徑 PathString(using Microsoft.AspNetCore.Http;)
-                opt.LoginPath = new PathString("/Index");
-            opt.AccessDeniedPath = new PathString("/home/AccessDenied");
-        }) ;
+
+ 
 
 			//加入自訂的Class變成一個服務物件Singleton()獨一(應用系統中只有一個共用的物件)-0216
 			services.AddSingleton<Models.DBUtility>();  //Method 1 -
