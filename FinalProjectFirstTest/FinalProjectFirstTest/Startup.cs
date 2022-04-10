@@ -37,8 +37,9 @@ namespace FinalProjectFirstTest
 			//加入 Cookie(using Microsoft.AspNetCore.Authentication.Cookies;)
 			services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(opt =>
 			{  //登入路徑 PathString(using Microsoft.AspNetCore.Http;)
-				opt.LoginPath = new PathString("/Index");
-				opt.AccessDeniedPath = new PathString("/home/AccessDenied");
+				opt.LoginPath = new PathString("/Index");//未登入時會導入這頁面
+				opt.AccessDeniedPath = new PathString("/home/AccessDenied"); //限制無認證Cookie
+				opt.ExpireTimeSpan = TimeSpan.FromDays(14);  //登入有效時間設置
 			});
 
 		// *** 連線SQL config*/
@@ -49,7 +50,7 @@ namespace FinalProjectFirstTest
             {
                 opt.UseSqlServer(Configuration.GetConnectionString("FinalProjectTest"));
             });
-
+			
  
 
 			//加入自訂的Class變成一個服務物件Singleton()獨一(應用系統中只有一個共用的物件)-0216
@@ -78,13 +79,13 @@ namespace FinalProjectFirstTest
 			app.UseStaticFiles();
 
 			app.UseRouting();
-
-			// 加入 Authorization
-			//app.UseAuthorization();
-
-
+			// 加入 CookiePolicy
+			app.UseCookiePolicy();
+			// 加入 Authentication
+			app.UseAuthentication();
+			// 啟用授權識別
 			app.UseAuthorization();
-
+			// Cookie, Authentication, Authoriz 前後順序不能對調
 			app.UseEndpoints(endpoints =>
 			{
 				endpoints.MapControllerRoute(

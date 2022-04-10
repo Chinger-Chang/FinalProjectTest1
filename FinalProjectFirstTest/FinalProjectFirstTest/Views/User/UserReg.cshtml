@@ -1,0 +1,73 @@
+﻿
+@{
+    ViewData["Title"] = "UserReg";
+}
+
+<h1>使用者註冊</h1>
+<div id="app">
+    <div>
+        <label>電子信箱</label>
+        <input type="text" v-model="user.email" required placeholder="請輸入電子信箱" />
+    </div>
+    <div>
+        <label>密碼</label>
+        <input type="text" v-model="user.password" required placeholder="請輸入密碼" />
+    </div>
+    <div>
+        <label>姓名</label>
+        <input type="text" v-model="user.name" required placeholder="請輸入姓名" />
+    </div>
+    <div>
+        <label>電話</label>
+        <input type="text" v-model="user.phone" required placeholder="請輸入電話" />
+    </div>
+    <div>
+        <label>再次確認密碼</label>
+
+        <input type="text"  required placeholder="再次確認密碼" />
+    </div>
+    <button v-on:click="RegFunc">確認送出</button>
+
+</div>
+
+
+<script>
+    /**建立一個Vue 物件 */
+    var app = new Vue({
+        el: '#app',  //定義Vue作用範圍
+        data: {     //資料定義
+            user: {  //資料物件名稱
+                email: "",
+                password: "",
+                name: "",
+                phone: ""
+                }
+            },     ///抓取資料
+        methods: {   //定義方法
+            RegFunc: function () {  //註冊按鈕函式
+                let regdata = new FormData();
+                regdata.append("Email", this.user.email);
+                regdata.append("Password", this.user.password);
+                regdata.append("Name", this.user.name);
+                regdata.append("Phone", this.user.phone);
+                console.log('觸發');
+            //  let self = this;          //建立一物件
+                $.ajax({   //使用ajax傳遞
+                    url: "/User/RegistrationPost", //傳遞伺服端之位址
+                    method: "post",  //傳遞方法為POST
+                    //contentType:"multipart/form-data",
+                    //headers: {"Content-Type":'multipart/form-data'},
+                    data: regdata, //傳遞資料為Vue綁定之物件
+                    //成功訊息
+                    success: function () {
+
+                    },
+                    //失敗訊息
+                    error: function () { }
+                });
+            }
+        }
+    });
+
+</script>
+
