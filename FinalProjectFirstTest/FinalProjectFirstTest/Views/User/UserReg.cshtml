@@ -40,7 +40,9 @@
                 email: "",
                 password: "",
                 name: "",
-                phone: ""
+                phone: "",
+                createdate:"",        //  public DateTime CreateDate { get; set; }
+                ismailconfirm:""//public bool IsMailConfirm { get; set; }
                 }
             },     ///抓取資料
         methods: {   //定義方法
@@ -50,14 +52,19 @@
                 regdata.append("Password", this.user.password);
                 regdata.append("Name", this.user.name);
                 regdata.append("Phone", this.user.phone);
+                regdata.append("CreateDate", this.user.createdate);
+                regdata.append("IsMailConfirm", false)
                 console.log('觸發');
             //  let self = this;          //建立一物件
                 $.ajax({   //使用ajax傳遞
                     url: "/User/RegistrationPost", //傳遞伺服端之位址
-                    method: "post",  //傳遞方法為POST
+                    type: "post",  //傳遞方法為POST
+                    processData: false,
+                    contentType: false,
                     //contentType:"multipart/form-data",
                     //headers: {"Content-Type":'multipart/form-data'},
-                    data: regdata, //傳遞資料為Vue綁定之物件
+
+                    data:regdata, //傳遞資料為Vue綁定之物件
                     //成功訊息
                     success: function () {
 
