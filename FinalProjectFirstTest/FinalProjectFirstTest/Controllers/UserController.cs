@@ -49,21 +49,28 @@ namespace FinalProjectFirstTest.Controllers
         {
             if(ModelState.IsValid)
             {
-                _db.Users.FirstOrDefault();  //資料表名稱User名稱內 搜尋到是否有這樣咚咚
+                var userreg=_db.Users.FirstOrDefault(x=>x.Email== user.Email);  //資料表名稱User名稱內 搜尋到是否有這樣咚咚
                 //創建一個新的User表
+                if(userreg==null)
+                { 
                 _db.Users.Add(new User()
                     {
                            Email = user.Email,
                             Password = user.Password,
                             Name=user.Name,
                             Phone=user.Phone,
-                            CreateDate=DateTime.Now,
+                            CreateDate=Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
                             IsMailConfirm=false
                     }); //前端所進來之資料 加入至伺服端 資料表做準備儲存
                 _db.SaveChanges(); //進行儲存 變更動作
-                
+                }
+                return RedirectToAction("Index","Home");  //導入至首頁
+            }else
+            {
+                //以被使用
+                return Content("已被使用");
             }
-            return RedirectToPage("Index");  //導入至首頁
+            //return RedirectToPage("Index");  //導入至首頁
             // return View();  
         }
 

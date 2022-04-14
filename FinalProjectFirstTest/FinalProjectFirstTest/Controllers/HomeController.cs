@@ -1,4 +1,5 @@
 ﻿using FinalProjectFirstTest.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -26,7 +27,7 @@ namespace FinalProjectFirstTest.Controllers
 		{
 			return View();
 		}
-
+		[Authorize]
 		public IActionResult Privacy()
 		{
 			return View();
