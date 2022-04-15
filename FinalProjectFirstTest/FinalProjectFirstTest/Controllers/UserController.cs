@@ -2,15 +2,19 @@
 using FinalProjectFirstTest.Models.ViewModel;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Facebook;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net.Mail;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using FinalProjectFirstTest.Services;
 
 namespace FinalProjectFirstTest.Controllers
 {
@@ -51,29 +55,48 @@ namespace FinalProjectFirstTest.Controllers
             {
                 var userreg=_db.Users.FirstOrDefault(x=>x.Email== user.Email);  //資料表名稱User名稱內 搜尋到是否有這樣咚咚
                 //創建一個新的User表
-                if(userreg==null)
-                { 
-                _db.Users.Add(new User()
+                if (userreg == null)
+                {
+                    _db.Users.Add(new User()
                     {
-                           Email = user.Email,
-                            Password = user.Password,
-                            Name=user.Name,
-                            Phone=user.Phone,
-                            CreateDate=Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
-                            IsMailConfirm=false
+                        Email = user.Email,
+                        Password = user.Password,
+                        Name = user.Name,
+                        Phone = user.Phone,
+                        CreateDate = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")),
+                        IsMailConfirm = false
                     }); //前端所進來之資料 加入至伺服端 資料表做準備儲存
-                _db.SaveChanges(); //進行儲存 變更動作
+                    _db.SaveChanges(); //進行儲存 變更動作
+                    return RedirectToAction("Index", "Home");  //導入至首頁
                 }
-                return RedirectToAction("Index","Home");  //導入至首頁
+                else {
+                    //以被使用
+                    return Content("已被使用");
+
+                }
+                
             }else
             {
-                //以被使用
-                return Content("已被使用");
+                return RedirectToPage("Index");  //導入至首頁
             }
-            //return RedirectToPage("Index");  //導入至首頁
+
             // return View();  
         }
 
+        //---------------------------------------
+        //寄信
+        public ActionResult SendMail()
+        {   
+            var mails = new string[] {"t108458055@gmail.com"};
+            var mailhelper = new MailHelper();
+            mailhelper.CreateMail(mails,"測試","<h1>Hello</h1>");
+            mailhelper.Send();
+
+            return Content("寄信");
+        }
+
+
+        //-------------------------------
         // 郵件認證 Verify Email
         public IActionResult VerifyEmail()
         {
@@ -139,6 +162,52 @@ namespace FinalProjectFirstTest.Controllers
         //    return Json(model);
         }
 
+        //其他登入方式
+        public IActionResult FBLogin()
+        {
+            var properites = new AuthenticationProperties() {
+                RedirectUri=Url.Action("FacebookResponse")
+            };
+            return Challenge(properites,FacebookDefaults.AuthenticationScheme);
+        }
+
+        public async Task<IActionResult> FacebookResponse()
+        {
+            var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            var data=result.Principal.Claims.Select(x=> new 
+            {
+                    x.Type,
+                    x.Value,
+                    x.Issuer,
+                    x.OriginalIssuer
+            } );
+            return Json(data);
+        }
+
+
+        [Route("google-login")]
+        public IActionResult GGLogin()
+        {
+            var properties = new AuthenticationProperties { RedirectUri = Url.Action("GoogleResponse") };
+
+            return Challenge(properties,GoogleDefaults.AuthenticationScheme);
+        }
+
+        [Route("google-response")]
+        public async Task<IActionResult> GoogleResponse()
+        {
+            var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            var claims = result.Principal.Identities.FirstOrDefault()
+                .Claims.Select(claim => new
+                { 
+                    claim.Issuer,
+                    claim.OriginalIssuer,
+                    claim.Type,
+                    claim.Value
+                });
+            return Json(claims);
+        }
 
 
         // Tests string

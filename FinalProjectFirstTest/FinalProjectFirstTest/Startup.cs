@@ -35,12 +35,25 @@ namespace FinalProjectFirstTest
 			// *** Cookie config*/
 
 			//加入 Cookie(using Microsoft.AspNetCore.Authentication.Cookies;)
-			services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(opt =>
+			services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+				.AddCookie(opt =>
 			{  //登入路徑 PathString(using Microsoft.AspNetCore.Http;)
 				opt.LoginPath = new PathString("/Index");//未登入時會導入這頁面
 				opt.AccessDeniedPath = new PathString("/home/AccessDenied"); //限制無認證Cookie
 				opt.ExpireTimeSpan = TimeSpan.FromDays(14);  //登入有效時間設置
-			});
+			})
+				//加入使用google認證
+				.AddGoogle(opt=>  
+				{
+					opt.ClientId = "";
+					opt.ClientSecret = "";
+				})
+				//加入 使用 FaceBook 認證
+				.AddFacebook(opt=> 
+				{
+					opt.AppId = "";
+					opt.AppSecret = "";
+				});
 
 		// *** 連線SQL config*/
 			//取出連接字串 操作定義的Property Configuration
